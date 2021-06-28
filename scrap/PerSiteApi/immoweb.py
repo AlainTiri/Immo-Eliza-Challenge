@@ -21,7 +21,7 @@ class ThreadPoolExecutorWithQueueSizeLimit(concurrent.futures.ThreadPoolExecutor
         self._work_queue = queue.Queue(maxsize=maxsize)
 
 
-def coupe_page(text, start, end):
+def coupe_page(text, start, end) -> str:
     start_text: int = text.index(start) + len(start)
     text: str = text[start_text:]
     end_text: int = text.index(end)

@@ -3,7 +3,7 @@ from lat_long import get_lat_from_zip, get_long_from_zip
 import pandas as pd
 
 
-def preprocess(df: pd.DataFrame) -> pd.DataFrame:
+def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     # Nettoyer les type et sub type null
 
     df.loc[df["Type of sale"] == "public sale", 'Type of sale'] = None

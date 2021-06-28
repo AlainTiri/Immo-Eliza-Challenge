@@ -1,5 +1,5 @@
 
-import preprocess
+from preprocess import preprocess_data
 import pandas as pd
 import pickle
 
@@ -24,7 +24,7 @@ def to_predict(to_predict: dict):
     df_to_predict["Url"] = "predict"
     df_to_predict = df_empty.append(df_to_predict)
 
-    df_to_predict = preprocess(df_to_predict)
+    df_to_predict = preprocess_data(df_to_predict)
 
     df_empty_long = df.iloc[0:0]
     df_to_predict = df_empty_long.append(df_to_predict)
