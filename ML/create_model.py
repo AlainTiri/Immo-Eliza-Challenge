@@ -7,13 +7,12 @@ from sklearn.model_selection import train_test_split
 import time
 import pickle
 import preprocess
-from typing import List, Dict
 
 
-path_model = "Eliza_XGB_Model.pkl"
+path_model: str = "Eliza_XGB_Model.pkl"
 
 
-def knn(data_input):
+def knn(data_input: pd.DataFrame) -> np.array:
     start = time.perf_counter()
     print("start knn")
 
@@ -26,7 +25,7 @@ def knn(data_input):
 
 
 def run():
-    df = pd.read_csv("./Data/database.csv", index_col=0)
+    df: pd.DataFrame = pd.read_csv("./Data/database.csv", index_col=0)
     df = preprocess(df)
 
     model = train(df)
