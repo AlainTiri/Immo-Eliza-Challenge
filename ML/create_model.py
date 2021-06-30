@@ -17,7 +17,7 @@ def knn(data_input: pd.DataFrame) -> np.ndarray:
     start = time.perf_counter()
     print("start knn")
 
-    imputer = KNNImputer(n_neighbors = 10)
+    imputer = KNNImputer(n_neighbors = 3)
     df_knn = imputer.fit_transform(data_input)
 
     finish = time.perf_counter()
@@ -36,38 +36,28 @@ def run():
 
 def train(df: pd.DataFrame) -> xgboost.XGBRegressor:
 
-    # It's not relevant to train and test without target (Y)
+    # It's not relevant to train or test without target (Y)
     df = df[df['Price'].notna()]
-    print("df")
-    print(df.shape)
-    print(df.columns)
 
-    # Splitting data into train and test split before using KNN
-    df_train, df_test = train_test_split(df, random_state=41, test_size=0.2)
-    print ("train")
-    print(df_train.shape)
+    with open("df_empty_pre.pkl", 'wb') as file:
+        df_empty = df.iloc[:0]
+        pickle.dump(df_empty, file)
 
-    df_train: pd.DataFrame = preprocess_data(df_train)
-    df_test: pd.DataFrame = preprocess_data(df_test)
+    df = preprocess_data(df)
 
-    print(df_train.shape)  #42
-    print(df_train.columns)
+    with open("df_empty_post.pkl", 'wb') as file:
+        df_empty = df.iloc[:0]
+        pickle.dump(df_empty, file)
 
+    y = df.Price
+    X = df.drop(columns="Price")
 
-    #df_knn: np.ndarray = knn(df_train)
-    #np.save("fichierKNN.data", df_knn)
-    df_knn = np.load("fichierKNN.data.npy")
+    # Splitting data into train and test split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=41, test_size=0.2)
 
-    y_train: np.ndarray = df_knn[:, 0]
-    X_train: np.ndarray = df_knn[:, 1:]
-    print("x y train")
-    print(y_train.shape, X_train.shape)  # 41
-    #y_train = y_train.T
-    print(y_train.shape, X_train.shape)
-
-    model = xgb.XGBRegressor(random_state=0, n_jobs=6, max_depth=8, grow_policy = 'lossguide', max_leaves = 500,
-                        max_bin = 512, reg_alpha = 5, reg_lambda = 5,
-                        n_estimators = 100, learning_rate=0.1, tree_method = 'gpu_hist')
+    model = xgb.XGBRegressor(random_state=0, n_jobs=6, max_depth=8, grow_policy = 'lossguide', max_leaves = 100,
+                             max_bin = 512, reg_alpha = 0, reg_lambda = 0, n_estimators = 1000, learning_rate=0.1,
+                             tree_method = 'gpu_hist')
 
     start = time.perf_counter()
     print("start training")
@@ -76,16 +66,48 @@ def train(df: pd.DataFrame) -> xgboost.XGBRegressor:
     finish = time.perf_counter()
     print(f"Training fini en {round(finish-start, 2)} secondes")
 
-    print("test")
-    print(df_test.columns)
-    print(df_test.shape)  # 43
-    y_test: pd.Series = df_test["Price"]
-    X_test: pd.DataFrame = df_test.drop(columns='Price')
-    print("x y test")
-    print(X_test.shape, y_test.shape)
-
+    print("score train")
     print(model.score(X_train, y_train))
+    print("score test")
     print(model.score(X_test, y_test))
+
+    print("MSE : ", np.sqrt(((y_test - model.predict(X_test)) ** 2).mean()) )
 
     return model
 
+
+    """
+    df_train: pd.DataFrame = preprocess_data(df_train)
+    df_test: pd.DataFrame = preprocess_data(df_test)
+
+    for col in df_train.columns:
+        if not col in df_test.columns:
+            print("train to test, ", col)
+            df_test[col] = 0
+    for col in df_test.columns:
+        if not col in df_train.columns:
+            print("test to train", col)
+            df_train[col] = 0"""
+    """
+
+    df_knn: np.ndarray = knn(df_train)
+    np.save("fichierKNN.data", df_knn)
+    # df_knn = np.load("fichierKNN.data.npy")
+
+    y_train: np.ndarray = df_knn[:, 0]
+    X_train: np.ndarray = df_knn[:, 1:]
+    
+    
+    
+    #df_knn = knn(df)
+    #np.save("fichierKNN.data", df_knn)
+    df_knn = np.load("fichierKNN.data.npy")
+
+    y = df_knn[:, 0]  # .reshape(-1,1)
+    X = df_knn[:, 1:]
+    # y = y.T
+    print(y.shape)
+    
+    
+    
+    """

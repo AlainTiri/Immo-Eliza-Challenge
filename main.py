@@ -18,9 +18,31 @@ if __name__ == '__main__':
     ask = input("Voulez-vous créer un nouveau modèle : (y/n)")
     if ask.lower().startswith("y"):
         ML.create_model.run()
-    else:
-        ask = input("Vous êtes sur ? (y/n)")
-        ML.create_model.run()
+
+    ask = input("Voulez-vous tester le modèle : (y/n)")
+    if ask.lower().startswith("y"):
+
+        # Han
+        to_predict = {"Number of rooms": [2], "Fully equipped kitchen": [1], "Terrace": [1], "Garden": [0],
+                      "Swimming pool": [0], "Locality": [1160], "Area": [85], "State of the building": ["good"],
+                      "Type of property": ["apartment"]}
+        ML.to_predict.to_predict(to_predict)
+
+        # Olivier
+        to_predict = {"Number of rooms": [1], "Fully equipped kitchen": [1], "Terrace": [0], "Garden": [0],
+                      "Locality": [1000], "Area": [70], "State of the building": ["good"],
+                      "Type of property": ["apartment"], "Number of facades": [2]}
+        ML.to_predict.to_predict(to_predict)
+
+        # WSL Rue de la Cambre
+        to_predict = {"Number of rooms": [2], "Fully equipped kitchen": [1], "Terrace": [1], "Terrace Area": [30],
+                      "Garden": [0], "Locality": [1200], "Area": [120], "State of the building": ["good"],
+                      "Type of property": ["apartment"], "Number of facades": [2]}
+        ML.to_predict.to_predict(to_predict)
 
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+        # Maison blanche
+        to_predict = {"Number of rooms": [5], "Fully equipped kitchen": [1], "Terrace": [1], "Terrace Area": [8],
+                      "Garden": [1], "Locality": [1341], "Area": [200], "State of the building": ["good"],
+                      "Surface of the land": [1500], "Type of property": ["house"], "Number of facades": [4]}
+        ML.to_predict.to_predict(to_predict)

@@ -1,16 +1,15 @@
+import pickle
 
 from lat_long import get_lat_from_zip, get_long_from_zip
 import pandas as pd
 
 
 def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
-    # Nettoyer les type et sub type null
 
+    # Nettoyer les type et sub type null
     df.loc[df["Type of sale"] == "public sale", 'Type of sale'] = None
     df = df[df['Type of sale'].notna()]
     df = df.drop(axis=1, labels="Type of sale")
-
-    df.loc[df["Garden"] == 0, 'Garden Area'] = 0
 
     df.loc[df["Subtype of property"] == "villa", 'Type of property'] = "house"
     df.loc[df["Subtype of property"] == "loft", 'Type of property'] = "apartment"
@@ -25,12 +24,21 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     df.loc[df["Number of rooms"] == 0, 'Number of rooms'] = None
     df.loc[((df["Number of rooms"].isnull()) & (df["Subtype of property"] == "studio")), 'Number of rooms'] = 0
     df.loc[((df["Number of rooms"].isnull()) & (df["Subtype of property"] == "student")), 'Number of rooms'] = 0
+    df.loc[((df["Number of facades"].isnull()) & (df["Type of property"] == "apartment")), 'Number of facades'] = 2
     df.loc[(df["Garden Area"].isnull()) & (df["Garden"] == 0), "Garden Area"] = 0
-    df.loc[(df["Furnished"].isnull()), "Furnished"] = 0
     df.loc[((df["Subtype of property"].isnull()) & (
                 df["Type of property"] == "apartment")), "Subtype of property"] = "apartment"
     df.loc[
         ((df["Subtype of property"].isnull()) & (df["Type of property"] == "house")), "Subtype of property"] = "house"
+
+    df.loc[df["Terrace"] == 0, 'Terrace Area'] = 0
+    df.loc[(df["Swimming pool"].isnull()), "Swimming pool"] = 0
+    df.loc[(df["Furnished"].isnull()), "Furnished"] = 0
+    df.loc[(df["Open fire"].isnull()), "Open fire"] = 0
+
+    df.loc[df["Garden"] == 0, 'Garden Area'] = 0
+    df.loc[((df["Surface of the land"].isnull()) & (
+            df["Type of property"] == "house")), "Surface of the land"] = df["Garden Area"]
 
     df = df.drop(axis=1, labels="Url")
     df = df.drop(axis=1, labels="Source")
