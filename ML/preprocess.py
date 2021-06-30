@@ -27,9 +27,9 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     df.loc[((df["Number of facades"].isnull()) & (df["Type of property"] == "apartment")), 'Number of facades'] = 2
     df.loc[(df["Garden Area"].isnull()) & (df["Garden"] == 0), "Garden Area"] = 0
     df.loc[((df["Subtype of property"].isnull()) & (
-                df["Type of property"] == "apartment")), "Subtype of property"] = "apartment"
-    df.loc[
-        ((df["Subtype of property"].isnull()) & (df["Type of property"] == "house")), "Subtype of property"] = "house"
+            df["Type of property"] == "apartment")), "Subtype of property"] = "apartment"
+    df.loc[((df["Subtype of property"].isnull()) & (
+            df["Type of property"] == "house")), "Subtype of property"] = "house"
 
     df.loc[df["Terrace"] == 0, 'Terrace Area'] = 0
     df.loc[(df["Swimming pool"].isnull()), "Swimming pool"] = 0
@@ -37,8 +37,6 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     df.loc[(df["Open fire"].isnull()), "Open fire"] = 0
 
     df.loc[df["Garden"] == 0, 'Garden Area'] = 0
-    df.loc[((df["Surface of the land"].isnull()) & (
-            df["Type of property"] == "house")), "Surface of the land"] = df["Garden Area"]
 
     df = df.drop(axis=1, labels="Url")
     df = df.drop(axis=1, labels="Source")
