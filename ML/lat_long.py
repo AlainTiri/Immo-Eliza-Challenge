@@ -1150,6 +1150,5 @@ def get_lat_from_zip(zip_code):
     return dict_lat_long.get(zip_code,  {"lat": 0})["lat"]
 
 
-
 def get_long_from_zip(zip_code):
     return dict_lat_long.get(zip_code, {"lng": 0})["lng"]

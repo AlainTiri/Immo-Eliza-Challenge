@@ -46,3 +46,7 @@ if __name__ == '__main__':
                       "Garden": [1], "Locality": [1341], "Area": [200], "State of the building": ["good"],
                       "Surface of the land": [1500], "Type of property": ["house"], "Number of facades": [4]}
         ML.to_predict.to_predict(to_predict)
+
+    ask = input("Voulez-vous afficher les entêtes : (y/n)")
+    if ask.lower().startswith("y"):
+        ML.create_model.print_entetes()

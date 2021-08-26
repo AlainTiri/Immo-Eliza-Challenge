@@ -198,8 +198,8 @@ class Immoweb:
         self.clean_url_immo()
         self.url_of_datas = set(self.datas_immoweb.Url)
         self.url_immo.update(self.url_from_clusters)
-        self.url_immo.discard(self.url_errors)
-        self.url_immo.discard(self.url_of_datas)
+        self.url_immo.difference_update(self.url_errors)
+        self.url_immo.difference_update(self.url_of_datas)
 
         i = 0
 

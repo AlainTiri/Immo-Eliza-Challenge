@@ -7,6 +7,7 @@ _zipcodes = pd.read_csv(os.path.join(os.path.dirname(os.path.dirname(__file__)),
 _zipcodes_ext = pd.read_csv(
     os.path.join(os.path.dirname(os.path.dirname(__file__)), "Data", "zipcodes_extended.csv"), delimiter=";")
 
+
 class DataStruct:
     COLUMNS = (
         "Id",
@@ -145,6 +146,7 @@ class DataStruct:
     @staticmethod
     def get_zipcode_extended_data():
         return _zipcodes_ext.copy()
+
 
 if __name__ == "__main__":
     print(DataStruct.COLUMNS)
