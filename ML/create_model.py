@@ -56,7 +56,7 @@ def mean_and_median_by_locality(df: pd.DataFrame, df_zip_code: pd.DataFrame) -> 
     """
     Calcul mean and median price on each locality. If there are too less prices for to calculate a significante price
     (<5 choosen abritrary), it's the mean/median price for the entities.
-    TO Do : Process must be optimized
+    Todo : Process must be optimized
     :param df: Principal DataFrame with all data of real estate
     :param df_zip_code: DataFrame with list of all postal code of Belgium
     :return: A DataFrame with : ZipeCode, Locality Name, ZipCode Truncatened, Mean Price on each zipcode (exact or

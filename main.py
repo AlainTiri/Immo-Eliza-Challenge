@@ -4,6 +4,7 @@ sys.path.extend(os.path.join(os.path.dirname(__file__), "ML"))
 sys.path.extend(os.path.join(os.path.dirname(__file__), "scrap"))
 import ML
 import scrap
+# todo : re write srapping for to take in case the new captcha on immoweb
 
 
 def print_hi(name):
