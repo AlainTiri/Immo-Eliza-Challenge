@@ -1,7 +1,8 @@
-import pickle
-
 from lat_long import get_lat_from_zip, get_long_from_zip
 import pandas as pd
+import os
+
+mm_zip_path = os.path.join(os.path.dirname(__file__), "Data", "mean_median_zipcodes.csv")
 
 
 def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -47,8 +48,15 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.sort_values("Price", ascending=False)
     df = df[df['Price'] < 30000000]
 
+    # Add mean and median prices by locality
+    mm_zip = pd.read_csv(mm_zip_path, index_col=0)
+    for row in mm_zip.itertuples():
+        df.loc[df["Locality"] == row.zipcode, 'moyenne'] = row.moyenne
+        df.loc[df["Locality"] == row.zipcode, 'mediane'] = row.mediane
+
     to_replace = {None: "good"}
     df["State of the building"] = df["State of the building"].replace(to_replace)
+
     df["Locality"] = df["Locality"].astype(str)
     df['lat'] = df["Locality"].apply(get_lat_from_zip)
     df['long'] = df["Locality"].apply(get_long_from_zip)
