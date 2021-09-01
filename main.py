@@ -18,7 +18,8 @@ if __name__ == '__main__':
 
     ask = input("Voulez-vous créer un nouveau modèle : (y/n)")
     if ask.lower().startswith("y"):
-        ML.create_model.run()
+        new_model = ML.create_model.ModelImmoweb()
+        new_model.fit()
 
     ask = input("Voulez-vous tester le modèle : (y/n)")
     if ask.lower().startswith("y"):
